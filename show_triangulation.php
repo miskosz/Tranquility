@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<h2>Tranquility - Triagulations of Equilateral Triangles</h2>
+<h2>Triagulations of Equilateral Triangles</h2>
 
 
 <?php
@@ -43,8 +43,13 @@
 			$fill = $palette[abs($x+$y+$z) % count($palette)];
 			$textfill = "#FFFFFF";
 		} else {
-			$fill = "#FFFFFF";
-			$textfill = "#8F0000";
+      if ($x+$y+$z < 0) {
+        $fill = "#FFFFFF";
+      }
+      else {
+        $fill = "#CCCCCC";
+      }
+			$textfill = "#000000";
 		}
 		
 		echo '<polygon points="'.$triangle[0][0].','.$triangle[0][1].' '.$triangle[1][0].','.$triangle[1][1].' '.$triangle[2][0].','.$triangle[2][1].'"'.
@@ -66,12 +71,7 @@
 		// Get faces coordinates
 		$coords = preg_split( "/( |,)/", $coordinates);
 		$faces = preg_split( "/( |,)/", $faces_str);
-		
-		/*print_r($nvertices);
-		print_r($size);
-		print_r($coords);
-		print_r($faces);*/
-				
+						
 		// Draw the triangle
 		echo '<svg id="svgelem" height="'.($attributes['height']+10).'" width="'.($attributes['height']/0.866+10).'" xmlns="http://www.w3.org/2000/svg">';	
 		$zoom = ($attributes['height'] / 0.866) / $size;
@@ -134,57 +134,20 @@
 	////////////////////////////////////////////////////////////////////////////
 
 	// Get triangulation id
-	if (!isset($_GET['id_triangulation']) && !isset($_GET['id_graph']) && !isset($_POST['data_str'])) { ?>
-		<p>Enter comma- or space- separated list of triangulation id's:</p>
-		<form>
-			<textarea type="textarea" name="id_triangulation" rows="5" cols="80"></textarea><br />
-			<input type="submit" />
-		</form>
-		<p>OR enter graph id:</p>
-		<form>
-			<textarea type="textarea" name="id_graph" rows="5" cols="80"></textarea><br />
-			<input type="submit" />
-		</form>
-		<p>OR paste in tranquility output:</p>
+	if (!isset($_POST['data_str'])) { ?>
+		<h4>Paste in tranqulity output:</h4>
+		<p>Example:<br/><code>9 12 adc,afe,abg,hlg,hbi,jdi,jbc,kli,kfg,kde 0,0,9,-4,4,-3,3,-3,5,-5,-1,-2</code></p>
 		<form method="post">
-			<textarea type="textarea" name="data_str" rows="5" cols="80"></textarea><br />
+			<textarea type="textarea" name="data_str" rows="15" cols="80"></textarea><br />
 			<input type="submit" />
 		</form>
 
 		<?php	
 	}
 	else {
-	
-		if 	(isset($_GET['id_triangulation']) || isset($_GET['id_graph'])) {
-	
-			// Connect to the database	
-			$mysqli = new mysqli('localhost', 'postrelena', 'ahoj', 'postrelena');
-			if (mysqli_connect_error())
-				die('Connect Error ('.mysqli_connect_errno().') '.mysqli_connect_error());
-	
-			// Get triangulation id's
-			if (isset($_GET['id_triangulation']))
-				$id_triangulation = preg_split("/[\s,]+/", $_GET['id_triangulation']);
-			else if (isset($_GET['id_graph'])) {
-				$result = mysqli_query($mysqli, "SELECT id_triangulation FROM triangulation WHERE id_graph=".intval($_GET['id_graph']));
-				if (!$result) die('Failed to load data from database.');
-	
-				$id_triangulation = array();
-				while (($row = mysqli_fetch_assoc($result)))
-					$id_triangulation[] = $row['id_triangulation'];
-				mysqli_free_result($result);
-			}
-	
-			// Draw triangulations
-			foreach ($id_triangulation as $id)
-				draw_triangulation_from_id($id, array("height"=>300));
-		
-			// Close the connection
-			mysqli_close($mysqli);
-		
-		} else if (isset($_POST['data_str'])) {
-			$data1 = explode("\n", $_POST['data_str']);
-			foreach ($data1 as $data) {
+		$data1 = explode("\n", $_POST['data_str']);
+		foreach ($data1 as $data) {
+			if (trim($data)) {
 				$triangulation_data = explode(" ", $data);
 				draw_triangulation(
 					$triangulation_data[0], // size

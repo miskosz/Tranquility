@@ -9,3 +9,7 @@ tranquility: tranquility.cpp
 
 unique_merge: uniq_merge.cpp
 	${CC} -o uniq_merge ${CFLAGS} uniq_merge.cpp ${LDFLAGS}
+
+.PHONY: clean
+clean:
+	rm -f tranquility uniq_merge

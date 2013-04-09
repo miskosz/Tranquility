@@ -3,7 +3,7 @@
 #include <cstdlib>
 
 /**
- * Usafe version of uniq.
+ * Unsafe version of uniq.
  * Deletes duplicate consecutive rows on input. Rows are considered duplicate
  * if the integer value of the first field is the same.
  */

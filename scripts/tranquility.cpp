@@ -360,7 +360,7 @@ int find_solution(int p_color) {
 
 int load_graph() {
 	// read the number of vertices
-	if (scanf(" %d", &nVertices) != 1) {
+	if (scanf(" %d", (int *)&nVertices) != 1) {
 		// if fails, it must be EOF
 		return 1;
 	}
