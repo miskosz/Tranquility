@@ -8,3 +8,6 @@ time ../scripts/tranquility -progress 5000 < ../plantri_graphs/graphXXX > minima
 23   2m21.767s
 24   9m21.043s
 25   36m29.063s
+
+Specs: 8 Core, XEON 2.4GHz, 4GB RAM
+(The program is single-threaded though.)
