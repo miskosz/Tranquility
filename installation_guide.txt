@@ -1,0 +1,42 @@
+### Triagulations of Equilateral Triangles ###
+### Michal Szabados 2012- ###
+
+Bunch of utilities to generate all triangulations of an equilateral triangle
+with given size in a triangular grid. It is a part of my diploma thesis.
+
+## How to install ##
+
+You will need
+- mysql database
+- g++ compiler with libmysql (usually is preinstalled)
+- for triangulation visualization the directu=ory must be placed in php parsed
+  web directory
+
+# Load graphs into the database #
+
+1) Go to plantri_graphs directory
+	> cd plantri_graphs/
+2) Generate SQL inserts from plantri output
+	> ../scripts/plantri_to_sql.sh ! -iname "*.*"
+3) Log into mysql database
+4) Load graphs into the database
+	mysql> SOURCE plantri_graphs/reload_all.sql
+
+# Compute triangulations #
+
+1) Go to scripts directory
+	> cd scripts/
+2) Put in your mysql credential
+	> cp db_credentials.template.h db_credentials.h
+	> vim db_credentials.h
+2) Compile the program
+	> make
+3) Use tranquility.sh, adhere to the usage instructions
+	> ./run_tranquility.sh
+
+# View triangulations #
+
+1) Edit show_triangulation.php, find "Connect to the database" line and edit
+   the mysql credentials
+	> vim show_triangulation.php
+2) View show_triangulation.php in web browser

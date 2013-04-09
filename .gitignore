@@ -1,0 +1,8 @@
+# gitignore
+
+*.bak
+*.swp
+*~
+database/full_data.sql
+database/nondegenerate_data.sql
+scripts/db_credentials.h
